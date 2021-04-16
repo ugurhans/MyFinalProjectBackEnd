@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Core.Utilities.IoC;
-using Core.Utilities.IOC;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Extensions

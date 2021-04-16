@@ -76,10 +76,12 @@ namespace WebAPI
                     };
                 });
 
+            services.AddCors();
             services.AddDependencyResolvers(new ICoreModule[]
             {
                 new CoreModule()
             });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,9 +94,11 @@ namespace WebAPI
 
             app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
 
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
 
             app.UseStaticFiles();
 

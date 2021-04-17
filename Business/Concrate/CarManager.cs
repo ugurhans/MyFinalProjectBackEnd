@@ -27,6 +27,7 @@ namespace Business.Concrate
 
 
         //[SecuredOperation("car.add,admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car car)
         {
 
@@ -36,6 +37,8 @@ namespace Business.Concrate
 
 
         }
+
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
@@ -58,7 +61,7 @@ namespace Business.Concrate
             return new SuccessDataResult<Car>(_carDal.Get(p => p.CarID == CarId));
         }
 
-
+        [CacheAspect] // key,value
         public IDataResult<List<CarDetailDto>> GetCarDetail()
         {
 
@@ -66,6 +69,7 @@ namespace Business.Concrate
 
         }
 
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetailByCarId(int carId)
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(p => p.CarID == carId));
@@ -91,6 +95,7 @@ namespace Business.Concrate
 
         }
 
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car car)
         {
             _carDal.Update(car);

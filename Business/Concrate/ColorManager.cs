@@ -4,6 +4,7 @@ using System.Text;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,11 +22,15 @@ namespace Business.Concrate
         }
 
 
+        [CacheRemoveAspect("IColorService.Get")]
         public IResult Add(Color color)
         {
             _colorDal.Add(color);
             return new SuccessResult(Messages.ColorAdded);
         }
+
+
+        [CacheRemoveAspect("IColorService.Get")]
 
         public IResult Delete(Color color)
         {
@@ -33,6 +38,16 @@ namespace Business.Concrate
             return new SuccessResult(Messages.ColorDeleted);
         }
 
+
+        [CacheRemoveAspect("IColorService.Get")]
+        public IResult Update(Color color)
+        {
+            _colorDal.Update(color);
+            return new SuccessResult(Messages.ColorUpdated);
+        }
+
+
+        [CacheAspect(10)]
         public IDataResult<List<Color>> GetAll()
         {
 
@@ -45,10 +60,6 @@ namespace Business.Concrate
         }
 
 
-        public IResult Update(Color color)
-        {
-            _colorDal.Update(color);
-            return new SuccessResult(Messages.ColorUpdated);
-        }
+
     }
 }

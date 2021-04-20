@@ -29,7 +29,7 @@ namespace Business.Concrate
         }
 
 
-
+        [CacheRemoveAspect("ICarImageService.Get")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile file, CarImage carImage)
         {
@@ -52,6 +52,7 @@ namespace Business.Concrate
         }
 
 
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Delete(CarImage carImage)
         {
             var oldpath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..\\..\\..\\wwwroot")) + _carImageDal.Get(I => I.ImageId == carImage.ImageId).ImagePath;
@@ -65,30 +66,10 @@ namespace Business.Concrate
 
             _carImageDal.Delete(carImage);
             return new SuccessResult(Messages.ImagesDeleted);
-
-
         }
 
 
-
-        public IDataResult<List<CarImage>> GetAll(Expression<Func<CarImage, bool>> filter = null)
-        {
-            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(filter));
-        }
-
-        [ValidationAspect(typeof(CarImageValidator))]
-        [CacheAspect]
-        public IDataResult<CarImage> GetById(int id)
-        {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(I => I.ImageId == id));
-        }
-
-        public IDataResult<CarImage> GetPhotosByCarId(int carId)
-        {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarId == carId));
-        }
-
-
+        [CacheRemoveAspect("ICarImageService.Get")]
         public IResult Update(IFormFile file, CarImage carImage)
         {
             var isImage = _carImageDal.Get(c => c.ImageId == carImage.ImageId);
@@ -106,6 +87,27 @@ namespace Business.Concrate
             _carImageDal.Update(carImage);
             return new SuccessResult("Car image updated");
         }
+
+        [CacheAspect(10)]
+        public IDataResult<List<CarImage>> GetAll(Expression<Func<CarImage, bool>> filter = null)
+        {
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(filter));
+        }
+
+
+        [ValidationAspect(typeof(CarImageValidator))]
+        [CacheAspect(10)]
+        public IDataResult<CarImage> GetById(int id)
+        {
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(I => I.ImageId == id));
+        }
+
+        [CacheAspect(10)]
+        public IDataResult<CarImage> GetPhotosByCarId(int carId)
+        {
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(c => c.CarId == carId));
+        }
+
 
         private IResult CheckCarImageLimit(CarImage carImage)
         {

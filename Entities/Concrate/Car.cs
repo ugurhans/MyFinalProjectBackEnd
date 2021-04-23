@@ -16,7 +16,7 @@ namespace Entities.Concrate
         public int ColorId { get; set; }
         public int ModelYear { get; set; }
         public decimal DailyPrice { get; set; }
-        public string Desciription { get; set; }
+        public string Description { get; set; }
 
     }
 }
